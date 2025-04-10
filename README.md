@@ -25,8 +25,8 @@ A scalable URL shortener backend built with Node.js, Express, and MySQL.
 
 1. Clone the repository
 ```bash
-git clone https://github.com/yourusername/url-shortener-backend.git
-cd url-shortener-backend
+git clone https://github.com/yourusername/url-shortner.git
+cd url-shortner
 ```
 
 2. Install dependencies
