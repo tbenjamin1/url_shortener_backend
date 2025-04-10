@@ -36,7 +36,6 @@ app.get('/health', (req, res) => {
 });
 // Error handling middleware
 app.use((err, req, res, next) => {
-  console.error(err.stack);
   res.status(500).json({
     message: 'Something went wrong!',
     error: process.env.NODE_ENV === 'development' ? err.message : undefined
@@ -51,10 +50,8 @@ const PORT = process.env.PORT || 3000;
     await initializeDatabase();
     
     app.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`);
     });
   } catch (error) {
-    console.error('Failed to start server:', error);
     process.exit(1);
   }
 })();

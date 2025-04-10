@@ -159,7 +159,6 @@ export const register = async (req, res) => {
       },
     });
   } catch (error) {
-    console.error("Registration error:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 };
@@ -209,7 +208,6 @@ export const login = async (req, res) => {
       },
     });
   } catch (error) {
-    console.error("Login error:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 };
@@ -235,7 +233,6 @@ export const logout = async (req, res) => {
 
     res.status(200).json({ message: "Logout successful" });
   } catch (error) {
-    console.error("Logout error:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 };
@@ -261,7 +258,6 @@ export const socialLoginCallback = async (req, res) => {
     // Redirect to frontend with tokens in query params
     res.redirect(`${process.env.FRONTEND_URL}/auth/success?accessToken=${accessToken}&userId=${user.id}`);
   } catch (error) {
-    console.error("Social login callback error:", error);
     res.redirect(`${process.env.FRONTEND_URL}/auth/error`);
   }
 };
