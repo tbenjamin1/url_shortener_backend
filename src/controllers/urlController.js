@@ -3,7 +3,7 @@ import { sequelize } from '../config/database.js';
 
 
 
-// Function to generate a random short code
+// Function  generate a random short code
 const generateShortCode = (length = 6) => {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let shortCode = '';
@@ -16,26 +16,24 @@ const generateShortCode = (length = 6) => {
 
 
 
-// Create a shortened URL
+// Create  shortened URL
 export const shortenUrl = async (req, res) => {
   try {
     const { longUrl } = req.body;
     const userId = req.user.userId;
 
-    // Validate URL
     if (!longUrl) {
       return res.status(400).json({ message: 'URL is required' });
     }
 
-    // Check if URL is valid
     try {
       new URL(longUrl);
     } catch (err) {
       return res.status(400).json({ message: 'Invalid URL format' });
     }
 
-    // Generate a unique short code
-    const shortCode = generateShortCode(); // Implement this function to generate a unique short code
+    // Generate unique short code
+    const shortCode = generateShortCode(); 
 
     // Create shortened URL
     const urlData = await Url.create({
@@ -57,22 +55,19 @@ export const shortenUrl = async (req, res) => {
       }
     });
   } catch (error) {
-    console.error('URL shortening error:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 };
 
 
 
-// Get all URLs for the current user
+// Get all URLs for the  user
 export const getUserUrls = async (req, res) => {
   try {
     const userId = req.user.userId;
 
-    // Get all URLs for user
     const urls = await Url.findAll({ where: { user_id: userId } });
 
-    // Format response
     const formattedUrls = urls.map(url => ({
       id: url.id,
       shortCode: url.short_code,
@@ -85,7 +80,6 @@ export const getUserUrls = async (req, res) => {
       urls: formattedUrls
     });
   } catch (error) {
-    console.error('Get user URLs error:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 };
@@ -111,7 +105,6 @@ export const getUrlAnalytics = async (req, res) => {
       createdAt: urlData.created_at
     });
   } catch (error) {
-    console.error('Get URL analytics error:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 };

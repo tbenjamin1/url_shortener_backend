@@ -4,12 +4,11 @@ import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import { Strategy as GitHubStrategy } from "passport-github2";
 
-// In-memory store for blacklisted tokens
 const tokenBlacklist = new Map();
 
 // Configure Passport
 const configurePassport = () => {
-  // Google OAuth Strategy
+  
   passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
@@ -20,11 +19,10 @@ const configurePassport = () => {
       let user = await User.findOne({ where: { email: profile.emails[0].value } });
       
       if (!user) {
-        // Create new user if doesn't exist
         user = await User.create({
           username: profile.displayName,
           email: profile.emails[0].value,
-          password_hash: null, // Social login users don't need password
+          password_hash: null,
         });
       }
       
@@ -52,7 +50,7 @@ const configurePassport = () => {
         user = await User.create({
           username: profile.username,
           email,
-          password_hash: null, // Social login users don't need password
+          password_hash: null, 
         });
       }
       
@@ -78,7 +76,6 @@ const configurePassport = () => {
   });
 };
 
-// Call this function during app initialization
 configurePassport();
 
 // Generate JWT tokens
@@ -96,7 +93,7 @@ const generateTokens = (userId) => {
 
 // Blacklist tokens
 const blacklistToken = (token, expiresIn) => {
-  const expiryDate = Date.now() + expiresIn * 1000; // Convert to milliseconds
+  const expiryDate = Date.now() + expiresIn * 1000; 
   tokenBlacklist.set(token, expiryDate);
 };
 
@@ -105,9 +102,9 @@ const isTokenBlacklisted = (token) => {
   if (tokenBlacklist.has(token)) {
     const expiry = tokenBlacklist.get(token);
     if (Date.now() < expiry) {
-      return true; // Token is blacklisted and not expired
+      return true; 
     }
-    tokenBlacklist.delete(token); // Clean up expired token
+    tokenBlacklist.delete(token); 
   }
   return false;
 };
@@ -139,7 +136,7 @@ export const register = async (req, res) => {
     const user = await User.create({
       username,
       email,
-      password_hash: password, // The hook will hash this before saving
+      password_hash: password, 
     });
 
     const { accessToken, refreshToken } = generateTokens(user.id);
@@ -149,7 +146,7 @@ export const register = async (req, res) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      maxAge: 7 * 24 * 60 * 60 * 1000, 
     });
 
     res.status(201).json({
@@ -199,7 +196,7 @@ export const login = async (req, res) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      maxAge: 7 * 24 * 60 * 60 * 1000, 
     });
 
     res.status(200).json({
@@ -220,11 +217,9 @@ export const login = async (req, res) => {
 // Logout user
 export const logout = async (req, res) => {
   try {
-    // Get tokens from request
-    const accessToken = req.headers.authorization?.split(" ")[1]; // Bearer token
+    const accessToken = req.headers.authorization?.split(" ")[1];
     const refreshToken = req.cookies.refreshToken;
 
-    // Blacklist tokens if they exist
     if (accessToken) {
       const decodedToken = jwt.verify(accessToken, process.env.JWT_SECRET);
       const expiresIn = decodedToken.exp - Math.floor(Date.now() / 1000);
@@ -235,7 +230,7 @@ export const logout = async (req, res) => {
       const decodedRefresh = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
       const refreshExpiresIn = decodedRefresh.exp - Math.floor(Date.now() / 1000);
       blacklistToken(refreshToken, refreshExpiresIn > 0 ? refreshExpiresIn : 0);
-      res.clearCookie("refreshToken"); // Clear the refresh token cookie
+      res.clearCookie("refreshToken"); 
     }
 
     res.status(200).json({ message: "Logout successful" });
@@ -271,23 +266,23 @@ export const socialLoginCallback = async (req, res) => {
   }
 };
 
-// Initiate Google OAuth
+// Initiate Google 
 export const googleAuth = passport.authenticate("google", {
   session: false,
 });
 
-// Google OAuth callback
+// Google OAuth 
 export const googleAuthCallback = passport.authenticate("google", {
   session: false,
   failureRedirect: "/login",
 });
 
-// Initiate GitHub OAuth
+// Initiate GitHub 
 export const githubAuth = passport.authenticate("github", {
   session: false,
 });
 
-// GitHub OAuth callback
+// GitHub  callback
 export const githubAuthCallback = passport.authenticate("github", {
   session: false,
   failureRedirect: "/login",

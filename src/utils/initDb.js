@@ -1,4 +1,4 @@
-import { syncDatabase } from '../models/index.js';
+import { syncDatabase } from "../models/index.js";
 
 async function initializeDatabase() {
   try {
@@ -7,5 +7,5 @@ async function initializeDatabase() {
     throw error;
   }
 }
- 
+
 export { initializeDatabase };
