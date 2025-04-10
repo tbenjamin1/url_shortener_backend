@@ -126,7 +126,57 @@ npm start
     "email": "john@example.com"
   }
 }
+
 ```
+### Social Authentication Endpoints
+
+#### Google OAuth Login
+- **URL:** `/auth/google`
+- **Method:** `GET`
+- **Description:** Initiates the Google OAuth login process. Redirects the user to the Google login page.
+
+#### Google OAuth Callback
+- **URL:** `/auth/google/callback`
+- **Method:** `GET`
+- **Description:** Handles the callback from Google after user authentication. This endpoint will exchange the authorization code for tokens and log the user in.
+- **Response:**
+```json
+{
+  "message": "Login successful",
+  "accessToken": "jwt_access_token",
+  "user": {
+    "id": 1,
+    "username": "johndoe",
+    "email": "john@example.com"
+  }
+}
+```
+
+
+### GitHub OAuth Authentication Endpoints
+
+#### GitHub OAuth Login
+- **URL:** `/auth/github`
+- **Method:** `GET`
+- **Description:** Initiates the GitHub OAuth login process. Redirects the user to the GitHub login page.
+
+#### GitHub OAuth Callback
+- **URL:** `/auth/github/callback`
+- **Method:** `GET`
+- **Description:** Handles the callback from GitHub after user authentication. This endpoint will exchange the authorization code for tokens and log the user in.
+- **Response:**
+```json
+{
+  "message": "Login successful",
+  "accessToken": "jwt_access_token",
+  "user": {
+    "id": 1,
+    "username": "johndoe",
+    "email": "john@example.com"
+  }
+}
+```
+
 
 #### User Logout
 - **URL:** `/auth/logout`
