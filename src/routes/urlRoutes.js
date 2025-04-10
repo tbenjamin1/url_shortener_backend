@@ -6,8 +6,8 @@ const router = express.Router();
 
 // Rate limit for URL creation
 const createUrlRateLimiter = rateLimiter({
-  windowMs: 60 * 60 * 1000, // 1 hour
-  max: 50, // 50 requests per hour
+  windowMs: 60 * 60 * 1000, 
+  max: 50, 
   message: 'Too many URL creation attempts, please try again later'
 });
 

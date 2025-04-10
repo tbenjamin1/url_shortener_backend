@@ -38,7 +38,7 @@ export default (sequelize) => {
     }
   });
 
-  // Instance method for password verification
+  //  method for password verification
   UserModel.prototype.verifyPassword = async function(password) {
     return await bcrypt.compare(password, this.password_hash);
   };

@@ -4,10 +4,9 @@ import { authenticate, rateLimiter } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
-// Rate limit for authentication routes
 const authRateLimiter = rateLimiter({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 10, // 10 requests per windowMs
+  windowMs: 15 * 60 * 1000, 
+  max: 10, 
   message: 'Too many authentication attempts, please try again later'
 });
 

@@ -14,7 +14,7 @@ dotenv.config();
 // Initialize Express app
 const app = express();
 // Middleware
-app.use(helmet()); // Security headers
+app.use(helmet()); 
 app.use(cors({
   origin: process.env.NODE_ENV === "development" ? process.env.FRONTEND_URL : process.env.PROD_FRONTEND_URL,
   credentials: true
@@ -42,13 +42,10 @@ app.use((err, req, res, next) => {
 });
 // Server initialization
 const PORT = process.env.PORT || 3000;
-// Self-invoking async function to initialize database before starting server
+
 (async () => {
   try {
-    // Test database connection
     await testConnection();
-    
-    // Initialize database schema
     await initializeDatabase();
     
     // Start server
@@ -60,4 +57,4 @@ const PORT = process.env.PORT || 3000;
     process.exit(1);
   }
 })();
-export default app; // Export for testing purposes
+export default app; 
