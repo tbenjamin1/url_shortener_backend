@@ -29,7 +29,7 @@ Ensure you have the following installed:
 
 ### 1️⃣ Clone the Repository
 ```bash
-git clone https://github.com/yourusername/url-shortner.git
+git clone https://github.com/tbenjamin1/url-shortner.git
 cd url-shortner
 ```
 

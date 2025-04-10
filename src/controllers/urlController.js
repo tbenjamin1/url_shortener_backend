@@ -15,6 +15,7 @@ const generateShortCode = (length = 6) => {
   };
 
 
+
 // Create a shortened URL
 export const shortenUrl = async (req, res) => {
   try {
@@ -104,6 +105,8 @@ export const getUrlAnalytics = async (req, res) => {
 
     // Return analytics data
     res.status(200).json({
+      long_url: urlData.long_url,
+      short_code: urlData.short_code,
       clicks: urlData.clicks,
       createdAt: urlData.created_at
     });
