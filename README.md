@@ -37,16 +37,35 @@ npm install
 3. Configure environment variables
 Create a `.env` file in the root directory with the following variables:
 ```
-PORT=3000
+PORT=port_number
+
+# Environment configuration
+NODE_ENV=development
+
+
+# Database configuration
 DB_HOST=localhost
-DB_USER=your_database_user
-DB_PASSWORD=your_database_password
-DB_NAME=url_shortener
-JWT_SECRET=your_super_secret_key_for_jwt_tokens
-JWT_REFRESH_SECRET=your_refresh_token_secret_key
+DB_USER=database_user
+DB_PASSWORD=database_password
+DB_NAME=database_name
+
+
 JWT_EXPIRES_IN=1h
-JWT_REFRESH_EXPIRES_IN=7d
-FRONTEND_URL=http://localhost:3001
+FRONTEND_URL=frontend_url
+
+
+
+# Google OAuth
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+
+# GitHub OAuth
+GITHUB_CLIENT_ID=your_github_client_id
+GITHUB_CLIENT_SECRET=your_github_client_secret
+
+
+# JWT_SECRET=your_super_secret_key_for_jwt_tokens
+# JWT_REFRESH_SECRET=your_refresh_token_secret_key
 ```
 
 4. Start the server
