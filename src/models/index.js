@@ -9,22 +9,18 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, proces
   dialect: 'mysql',  
 });
 
-// Initialize models
 const User = UserModel(sequelize);
 const Url = UrlModel(sequelize);
 
-// Define associations
+//  associations
 User .hasMany(Url, { foreignKey: 'user_id' });
 Url.belongsTo(User, { foreignKey: 'user_id' });
 
 const syncDatabase = async () => {
   try {
     await sequelize.sync(); 
-    console.log('Database & tables created!');
   } catch (error) {
-    console.error('Error syncing database:', error);
   }
 };
 
-// Export models and sequelize instance
 export { sequelize, User, Url, syncDatabase };

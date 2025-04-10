@@ -17,6 +17,7 @@ export default (sequelize) => {
         key: 'id'
       }
     },
+    
     short_code: {
       type: DataTypes.STRING(10),
       allowNull: false,
