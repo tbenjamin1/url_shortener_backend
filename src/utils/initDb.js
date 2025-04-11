@@ -1,17 +1,15 @@
-import { syncDatabase } from '../models/index.js';
+import { sequelize } from '../config/database.js';
+// Import your models here if needed
 
-async function initializeDatabase() {
+export const initializeDatabase = async () => {
+  console.log('Initializing database schema...');
   try {
-    console.log('Initializing database schema...');
-    
-    // Use the syncDatabase function from your models/index.js
-    await syncDatabase();
-    
+    // Force: false ensures it doesn't drop tables
+    await sequelize.sync({ force: false });
     console.log('Database schema initialized successfully');
   } catch (error) {
-    console.error('Failed to initialize database schema:', error);
-    throw error;
+    console.error('Error syncing database:', error);
+    // Log error but continue execution
+    console.log('Database schema initialization encountered errors, but server will continue');
   }
-}
- 
-export { initializeDatabase };
+};
