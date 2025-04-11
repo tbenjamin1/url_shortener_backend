@@ -6,7 +6,7 @@ import UrlModel from './urlModel.js';
 // Initialize Sequelize
 const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
   host: process.env.DB_HOST,
-  dialect: 'mysql', // or 'postgres', 
+  dialect: 'postgres', // or 'mysql', 
 });
 
 // Initialize models
