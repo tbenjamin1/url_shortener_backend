@@ -14,11 +14,12 @@ dotenv.config();
 // Initialize Express app
 const app = express();
 // Middleware
-app.use(helmet()); // Security headers
+app.use(helmet()); 
 app.use(cors({
   origin: process.env.NODE_ENV === "development" ? process.env.FRONTEND_URL : process.env.PROD_FRONTEND_URL,
   credentials: true
 }));
+
 
 app.use(passport.initialize());
 app.use(express.json());
@@ -35,19 +36,17 @@ app.get('/health', (req, res) => {
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({
-    message: 'Something went wrongß!',
+    message: 'Something went wrong!',
     error: process.env.NODE_ENV === 'development' ? err.message : undefined
   });
 });
 // Server initialization
 const PORT = process.env.PORT || 3000;
-// Self-invoking async function to initialize database before starting server
+
 (async () => {
   try {
-    // Test database connection
     await testConnection();
-    
-    // Initialize database schema
+  
     await initializeDatabase();
     
     // Start server
