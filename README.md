@@ -1,64 +1,62 @@
 # URL Shortener Backend
 
-A scalable URL shortener backend built with **Node.js**, **Express**, and **MySQL**.
+A scalable URL shortener backend built with Node.js, Express, and MySQL.
 
-## 🚀 Features
+## Features
 
-- 🔐 **User Authentication** – JWT-based authentication with access & refresh tokens.
-- 🔗 **URL Shortening** – Convert long URLs into short, shareable links.
-- **Analytics** – Track clicks, referrers, and browser usage.
--  **Rate Limiting** – Prevent abuse with request rate limiting.
--  **Security Features** – Includes password hashing, CORS protection, and security headers.
--  **RESTful API** – Designed for seamless integration with frontend applications
+- User authentication with JWT (access & refresh tokens)
+- OAuth authentication with Google and GitHub
+- URL shortening with analytics
+- Rate limiting and security features
+- RESTful API design
 
-## 🛠 Tech Stack
+## Tech Stack
 
-- **Backend:** Node.js, Express
-- **Database:** MySQL
-- **Authentication:** JWT (JSON Web Tokens), bcrypt for password hashing
-- **Security:** Helmet, CORS, rate limiting
+- Node.js & Express
+- MySQL database
+- JWT authentication
+- bcrypt password hashing
 
-## 📌 Prerequisites
+## Prerequisites
 
-Ensure you have the following installed:
+- Node.js (v14+)
+- MySQL (v8+)
 
-- [Node.js](https://nodejs.org/) (v14+)
-- [MySQL](https://www.mysql.com/) (v8+)
+## Setup Instructions
 
-## ⚙️ Setup Instructions
-
-### 1️⃣ Clone the Repository
+1. Clone the repository
 ```bash
-git clone https://github.com/tbenjamin1/url-shortner.git
+git clone https://github.com/yourusername/url-shortner.git
 cd url-shortner
 ```
 
-### 2️⃣ Install Dependencies
+2. Install dependencies
 ```bash
 npm install
 ```
 
-### 3️⃣ Configure Environment Variables
-Create a `.env` file in the root directory and add the following:
-```ini
-PORT=3000
+3. Configure environment variables
+Create a `.env` file in the root directory with the following variables:
+```
+PORT=port_number
+
+# Environment configuration
 NODE_ENV=development
 
-
-
-# Database Configuration
+# Database configuration
 DB_HOST=localhost
-DB_USER=root
-DB_PASSWORD=yourpassword
-DB_NAME=url_shortener_db
+DB_USER=database_user
+DB_PASSWORD=database_password
+DB_NAME=database_name
 
-# JWT Secrets
-JWT_SECRET=your_super_secret_key
-JWT_REFRESH_SECRET=your_refresh_token_secret_key
+# JWT configuration
 JWT_EXPIRES_IN=1h
+JWT_SECRET=your_super_secret_key_for_jwt_tokens
+JWT_REFRESH_SECRET=your_refresh_token_secret_key
 
-# Frontend URL
-FRONTEND_URL=http://localhost:3000
+# URLs
+FRONTEND_URL=frontend_url
+BACKEND_URL=backend_url
 
 # Google OAuth
 GOOGLE_CLIENT_ID=your_google_client_id
@@ -69,7 +67,7 @@ GITHUB_CLIENT_ID=your_github_client_id
 GITHUB_CLIENT_SECRET=your_github_client_secret
 ```
 
-### 4️⃣ Start the Server
+4. Start the server
 ```bash
 # Development mode
 npm run dev
@@ -78,150 +76,260 @@ npm run dev
 npm start
 ```
 
-## 📚 API Documentation
+## API Documentation
 
-### 🔑 Authentication Endpoints
+### Authentication Endpoints
 
 #### User Registration
 - **URL:** `/auth/register`
 - **Method:** `POST`
 - **Request Body:**
-  ```json
-  {
-    "username": "johndoe",
-    "email": "john@example.com",
-    "password": "securepassword"
-  }
-  ```
+```json
+{
+  "username": "johndoe",
+  "email": "john@example.com",
+  "password": "securepassword"
+}
+```
 - **Response:**
-  ```json
-  {
-    "message": "User registered successfully",
-    "accessToken": "jwt_access_token",
-    "user": {
-      "id": 1,
-      "username": "johndoe",
-      "email": "john@example.com"
-    }
+```json
+{
+  "message": "User registered successfully",
+  "accessToken": "jwt_access_token",
+  "user": {
+    "id": 1,
+    "username": "johndoe",
+    "email": "john@example.com"
   }
-  ```
-
-
-
+}
+```
 
 #### User Login
 - **URL:** `/auth/login`
 - **Method:** `POST`
 - **Request Body:**
-  ```json
-  {
-    "email": "john@example.com",
-    "password": "securepassword"
-  }
-  ```
+```json
+{
+  "email": "john@example.com",
+  "password": "securepassword"
+}
+```
 - **Response:**
-  ```json
-  {
-    "message": "Login successful",
-    "accessToken": "jwt_access_token",
-    "user": {
-      "id": 1,
-      "username": "johndoe",
-      "email": "john@example.com"
-    }
+```json
+{
+  "message": "Login successful",
+  "accessToken": "jwt_access_token",
+  "user": {
+    "id": 1,
+    "username": "johndoe",
+    "email": "john@example.com"
   }
-  ```
+}
+```
+
+### Social Authentication Endpoints
+
+#### Google OAuth Login
+- **URL:** `/auth/google`
+- **Method:** `GET`
+- **Description:** Initiates the Google OAuth login process. Redirects the user to the Google login page.
+
+#### Google OAuth Callback
+- **URL:** `/auth/google/callback`
+- **Method:** `GET`
+- **Description:** Handles the callback from Google after user authentication. This endpoint will exchange the authorization code for tokens and log the user in.
+- **Response:**
+```json
+{
+  "message": "Login successful",
+  "accessToken": "jwt_access_token",
+  "user": {
+    "id": 1,
+    "username": "johndoe",
+    "email": "john@example.com"
+  }
+}
+```
+
+#### GitHub OAuth Login
+- **URL:** `/auth/github`
+- **Method:** `GET`
+- **Description:** Initiates the GitHub OAuth login process. Redirects the user to the GitHub login page.
+
+#### GitHub OAuth Callback
+- **URL:** `/auth/github/callback`
+- **Method:** `GET`
+- **Description:** Handles the callback from GitHub after user authentication. This endpoint will exchange the authorization code for tokens and log the user in.
+- **Response:**
+```json
+{
+  "message": "Login successful",
+  "accessToken": "jwt_access_token",
+  "user": {
+    "id": 1,
+    "username": "johndoe",
+    "email": "john@example.com"
+  }
+}
+```
 
 #### User Logout
 - **URL:** `/auth/logout`
 - **Method:** `POST`
 - **Headers:** `Authorization: Bearer <access_token>`
 - **Response:**
-  ```json
-  {
-    "message": "Logout successful"
-  }
-  ```
+```json
+{
+  "message": "Logout successful"
+}
+```
 
-### 🔗 URL Shortener Endpoints
+### URL Shortener Endpoints
 
 #### Shorten URL
 - **URL:** `/shorten`
 - **Method:** `POST`
 - **Headers:** `Authorization: Bearer <access_token>`
 - **Request Body:**
-  ```json
-  {
-    "longUrl": "https://example.com/very/long/url"
-  }
-  ```
+```json
+{
+  "longUrl": "https://example.com/very/long/url/that/needs/shortening"
+}
+```
 - **Response:**
-  ```json
-  {
-    "message": "URL shortened successfully",
-    "url": {
-      "shortCode": "abc123",
-      "longUrl": "https://example.com/very/long/url",
-      "clicks": 0
-    }
+```json
+{
+  "message": "URL shortened successfully",
+  "url": {
+    "id": 1,
+    "shortCode": "abc123",
+    "longUrl": "https://example.com/very/long/url/that/needs/shortening",
+    "createdAt": "2023-09-01T12:00:00.000Z",
+    "clicks": 0
   }
-  ```
+}
+```
 
 #### Get User URLs
 - **URL:** `/urls`
 - **Method:** `GET`
 - **Headers:** `Authorization: Bearer <access_token>`
 - **Response:**
-  ```json
-  {
-    "urls": [
-      {
-        "shortCode": "abc123",
-        "longUrl": "https://example.com/page1",
-        "clicks": 5
-      },
-      {
-        "shortCode": "def456",
-        "longUrl": "https://example.com/page2",
-        "clicks": 3
-      }
-    ]
-  }
-  ```
+```json
+{
+  "urls": [
+    {
+      "id": 1,
+      "shortCode": "abc123",
+      "longUrl": "https://example.com/very/long/url/that/needs/shortening",
+      "createdAt": "2023-09-01T12:00:00.000Z",
+      "clicks": 5
+    },
+    {
+      "id": 2,
+      "shortCode": "def456",
+      "longUrl": "https://another-example.com/page",
+      "createdAt": "2023-09-02T12:00:00.000Z",
+      "clicks": 3
+    }
+  ]
+}
+```
+
+#### Get Shareable URLs
+- **URL:** `/share/urls`
+- **Method:** `GET`
+- **Headers:** `Authorization: Bearer <access_token>`
+- **Response:**
+```json
+{
+  "urls": [
+    {
+      "id": 1,
+      "shortCode": "abc123",
+      "longUrl": "https://example.com/very/long/url/that/needs/shortening",
+      "shareableLink": "https://yourdomain.com/abc123",
+      "createdAt": "2023-09-01T12:00:00.000Z",
+      "clicks": 5
+    },
+    {
+      "id": 2,
+      "shortCode": "def456",
+      "longUrl": "https://another-example.com/page",
+      "shareableLink": "https://yourdomain.com/def456",
+      "createdAt": "2023-09-02T12:00:00.000Z",
+      "clicks": 3
+    }
+  ]
+}
+```
 
 #### Get URL Analytics
 - **URL:** `/analytics/:shortUrl`
 - **Method:** `GET`
 - **Headers:** `Authorization: Bearer <access_token>`
 - **Response:**
-  ```json
-  {
-    "analytics": {
-      "shortCode": "abc123",
+```json
+{
+  "analytics": {
+    "url": {
+      "id": 1,
+      "short_code": "abc123",
+      "long_url": "https://example.com/very/long/url/that/needs/shortening",
+      "created_at": "2023-09-01T12:00:00.000Z",
       "clicks": 5,
-      "referrers": [
-        { "source": "https://google.com", "count": 2 },
-        { "source": "https://twitter.com", "count": 1 }
-      ],
-      "browsers": [
-        { "browser": "Chrome", "count": 3 },
-        { "browser": "Firefox", "count": 2 }
-      ]
-    }
+      "user_id": 1
+    },
+    "clicks": 5,
+    "clicksByDate": [
+      {
+        "date": "2023-09-05",
+        "count": 3
+      },
+      {
+        "date": "2023-09-04",
+        "count": 2
+      }
+    ],
+    "referrers": [
+      {
+        "referrer": "https://google.com",
+        "count": 2
+      },
+      {
+        "referrer": "https://twitter.com",
+        "count": 1
+      }
+    ],
+    "browsers": [
+      {
+        "browser": "Chrome",
+        "count": 3
+      },
+      {
+        "browser": "Firefox",
+        "count": 2
+      }
+    ]
   }
-  ```
+}
+```
 
+#### Redirect to Original URL
+- **URL:** `/:shortCode`
+- **Method:** `GET`
+- **Description:** Public endpoint that redirects to the original URL and increments the click counter.
+- **Example:** Visiting `https://yourdomain.com/abc123` will redirect to the original long URL.
 
+## Security Considerations
 
-## 🔒 Security Considerations
+- Passwords are hashed using bcrypt
+- JWT tokens are used for authentication
+- HTTP-only cookies for refresh tokens
+- Rate limiting to prevent abuse
+- Helmet for security headers
+- CORS protection
 
-- 🔑 **Password Hashing:** bcrypt ensures user passwords are stored securely.
-- 🔐 **JWT Tokens:** Secure authentication with short-lived access tokens and refresh tokens.
-- **HTTP-Only Cookies:** Used for refresh token storage to enhance security.
--  **Rate Limiting:** Protects against excessive API requests.
--  **Helmet Middleware:** Adds security headers to prevent common vulnerabilities.
--  **CORS Protection:** Restricts API access to allowed domains.
+## License
 
-##  License
-
-This project is licensed under the [MIT License](LICENSE).
+[MIT](LICENSE)
