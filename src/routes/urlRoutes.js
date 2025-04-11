@@ -15,6 +15,8 @@ const createUrlRateLimiter = rateLimiter({
 router.post('/shorten', authenticate, createUrlRateLimiter, urlController.shortenUrl);
 router.get('/urls', authenticate, urlController.getUserUrls);
 router.get('/analytics/:shortUrl', authenticate, urlController.getUrlAnalytics);
+router.get('/:shortCode', urlController.redirectToUrl);
+router.get('/share/urls', authenticate, urlController.getShareableUrls);
 
 
 export default router;

@@ -77,6 +77,58 @@ export const getUserUrls = async (req, res) => {
   }
 };
 
+
+// Redirect to the original URL
+export const redirectToUrl = async (req, res) => {
+  try {
+    const { shortCode } = req.params;
+    // Find the URL data
+    const urlData = await Url.findOne({ where: { short_code: shortCode } });
+    if (!urlData) {
+      return res.status(404).send('URL not found');
+    }
+    // Increment the click count
+    await Url.update(
+      { clicks: urlData.clicks + 1 },
+      { where: { id: urlData.id } }
+    );
+    // Redirect to the original URL
+    return res.redirect(urlData.long_url);
+  } catch (error) {
+    console.error('URL redirect error:', error);
+    res.status(500).send('Server error');
+  }
+};
+export const getShareableUrls = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const baseUrl = process.env.BACKEND_URL || `${req.protocol}://${req.get('host')}`; 
+    // Get all URLs for user
+    const urls = await Url.findAll({ where: { user_id: userId } });
+    // Format response with shareable links
+    const shareableUrls = urls.map(url => ({
+      id: url.id,
+      shortCode: url.short_code,
+      longUrl: url.long_url,
+      shareableLink: `${baseUrl}/${url.short_code}`,
+      createdAt: url.created_at,
+      clicks: url.clicks
+    }));
+    res.status(200).json({
+      urls: shareableUrls
+    });
+  } catch (error) {
+    console.error('Get shareable URLs error:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+
+
+
+
+
+
 // Get analytics for a URL
 export const getUrlAnalytics = async (req, res) => {
   try {
