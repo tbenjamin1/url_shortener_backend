@@ -1,20 +1,16 @@
-
-import { Sequelize } from 'sequelize';
+import { sequelize } from '../config/database.js';
 import UserModel from './userModel.js';
 import UrlModel from './urlModel.js';
 
-// Initialize Sequelize
-const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
-  host: process.env.DB_HOST,
-  dialect: 'postgres', // or 'mysql', 
-});
+// Use the existing sequelize instance that has SSL configuration
+// instead of creating a new one
 
 // Initialize models
 const User = UserModel(sequelize);
 const Url = UrlModel(sequelize);
 
 // Define associations
-User .hasMany(Url, { foreignKey: 'user_id' });
+User.hasMany(Url, { foreignKey: 'user_id' });
 Url.belongsTo(User, { foreignKey: 'user_id' });
 
 // Sync models with the database (optional, use with caution in production)
@@ -28,4 +24,4 @@ const syncDatabase = async () => {
 };
 
 // Export models and sequelize instance
-export { sequelize, User, Url, syncDatabase };
+export { User, Url, syncDatabase };
