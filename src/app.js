@@ -16,7 +16,7 @@ const app = express();
 // Middleware
 app.use(helmet()); // Security headers
 app.use(cors({
-  origin: process.env.FRONTEND_URL,
+  origin: process.env.NODE_ENV === "development" ? process.env.FRONTEND_URL : process.env.PROD_FRONTEND_URL,
   credentials: true
 }));
 
